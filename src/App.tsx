@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Layout } from "./components/layout/Layout";
 import Dashboard from "./pages/Dashboard";
 import Clients from "./pages/Clients";
-import Inventory from "./pages/Inventory";
+import Items from "./pages/Items";
 import Invoices from "./pages/Invoices";
 
 const queryClient = new QueryClient();
@@ -21,7 +21,7 @@ const App = () => (
           <Route element={<Layout />}>
             <Route path="/" element={<Dashboard />} />
             <Route path="/clients" element={<Clients />} />
-            <Route path="/inventory" element={<Inventory />} />
+            <Route path="/items" element={<Items />} />
             <Route path="/invoices" element={<Invoices />} />
           </Route>
         </Routes>
