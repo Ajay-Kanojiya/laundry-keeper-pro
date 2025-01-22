@@ -10,12 +10,41 @@ import {
 import { FileText, Plus } from "lucide-react";
 
 const invoices = [
-  { id: 1, client: "John Doe", amount: "$120.00", status: "Paid", date: "2024-02-20" },
-  { id: 2, client: "Jane Smith", amount: "$85.50", status: "Pending", date: "2024-02-19" },
-  { id: 3, client: "Bob Johnson", amount: "$45.00", status: "Overdue", date: "2024-02-18" },
+  { 
+    id: 1, 
+    client: "John Doe", 
+    items: [
+      { name: "T-Shirt", quantity: 3, rate: 5.00 },
+      { name: "Pants", quantity: 1, rate: 7.50 }
+    ],
+    status: "Paid", 
+    date: "2024-02-20" 
+  },
+  { 
+    id: 2, 
+    client: "Jane Smith", 
+    items: [
+      { name: "Dress", quantity: 2, rate: 10.00 }
+    ],
+    status: "Pending", 
+    date: "2024-02-19" 
+  },
+  { 
+    id: 3, 
+    client: "Bob Johnson", 
+    items: [
+      { name: "T-Shirt", quantity: 4, rate: 5.00 }
+    ],
+    status: "Overdue", 
+    date: "2024-02-18" 
+  },
 ];
 
 export default function Invoices() {
+  const calculateTotal = (items: { quantity: number; rate: number }[]) => {
+    return items.reduce((total, item) => total + (item.quantity * item.rate), 0);
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -31,7 +60,8 @@ export default function Invoices() {
           <TableHeader>
             <TableRow>
               <TableHead>Client</TableHead>
-              <TableHead>Amount</TableHead>
+              <TableHead>Items</TableHead>
+              <TableHead>Total Amount</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Date</TableHead>
               <TableHead>Actions</TableHead>
@@ -41,7 +71,8 @@ export default function Invoices() {
             {invoices.map((invoice) => (
               <TableRow key={invoice.id}>
                 <TableCell className="font-medium">{invoice.client}</TableCell>
-                <TableCell>{invoice.amount}</TableCell>
+                <TableCell>{invoice.items.length} items</TableCell>
+                <TableCell>${calculateTotal(invoice.items).toFixed(2)}</TableCell>
                 <TableCell>{invoice.status}</TableCell>
                 <TableCell>{invoice.date}</TableCell>
                 <TableCell>
