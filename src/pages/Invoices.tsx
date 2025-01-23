@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { FileText, Download, check, clock } from "lucide-react";
+import { FileText, Download, Check, Clock } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import {
   Dialog,
@@ -141,7 +141,7 @@ export default function Invoices() {
                               ? 'bg-green-100 text-green-800' 
                               : 'bg-yellow-100 text-yellow-800'
                           }`}>
-                            {invoice.status === 'Paid' ? <check className="w-3 h-3 mr-1" /> : <clock className="w-3 h-3 mr-1" />}
+                            {invoice.status === 'Paid' ? <Check className="w-3 h-3 mr-1" /> : <Clock className="w-3 h-3 mr-1" />}
                             {invoice.status}
                           </span>
                         </Button>
