@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { FileText, Download } from "lucide-react";
+import { FileText, Download, check, clock } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import {
   Dialog,
@@ -22,7 +22,6 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 
-// Extended dummy data for generated invoices
 const invoicesData = [
   {
     id: 1,
@@ -142,7 +141,7 @@ export default function Invoices() {
                               ? 'bg-green-100 text-green-800' 
                               : 'bg-yellow-100 text-yellow-800'
                           }`}>
-                            {invoice.status === 'Paid' ? <Check className="w-3 h-3 mr-1" /> : <Clock className="w-3 h-3 mr-1" />}
+                            {invoice.status === 'Paid' ? <check className="w-3 h-3 mr-1" /> : <clock className="w-3 h-3 mr-1" />}
                             {invoice.status}
                           </span>
                         </Button>
