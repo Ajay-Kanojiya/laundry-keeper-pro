@@ -8,13 +8,14 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Users, ShoppingBag, FileText, Home } from "lucide-react";
+import { Users, ShoppingBag, FileText, Home, List } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const menuItems = [
   { title: "Dashboard", icon: Home, path: "/" },
   { title: "Clients", icon: Users, path: "/clients" },
   { title: "Items", icon: ShoppingBag, path: "/items" },
+  { title: "Item Logs", icon: List, path: "/item-logs" },
   { title: "Invoices", icon: FileText, path: "/invoices" },
 ];
 

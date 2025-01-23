@@ -7,6 +7,7 @@ import { Layout } from "./components/layout/Layout";
 import Dashboard from "./pages/Dashboard";
 import Clients from "./pages/Clients";
 import Items from "./pages/Items";
+import ItemLogs from "./pages/ItemLogs";
 import Invoices from "./pages/Invoices";
 
 const queryClient = new QueryClient();
@@ -22,6 +23,7 @@ const App = () => (
             <Route path="/" element={<Dashboard />} />
             <Route path="/clients" element={<Clients />} />
             <Route path="/items" element={<Items />} />
+            <Route path="/item-logs" element={<ItemLogs />} />
             <Route path="/invoices" element={<Invoices />} />
           </Route>
         </Routes>
