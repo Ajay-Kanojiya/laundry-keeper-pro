@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Plus } from "lucide-react";
+import { Plus, ArrowLeft, Calendar, Package2, DollarSign } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -21,6 +21,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
   Pagination,
   PaginationContent,
@@ -30,50 +31,78 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
-// Move this to a separate file later (e.g., src/data/mockData.ts)
-const clientsData = [
-  { 
-    id: 1, 
-    name: "John Doe",
-    itemLogs: [
-      { 
-        id: 1,
-        date: "2024-03-20",
-        items: [
-          { name: "T-Shirt", quantity: 3, rate: 5.00 },
-          { name: "Pants", quantity: 2, rate: 7.50 }
-        ]
-      },
-      { 
-        id: 2,
-        date: "2024-03-25",
-        items: [
-          { name: "Dress Shirt", quantity: 1, rate: 6.00 }
-        ]
-      }
-    ]
-  },
-  { 
-    id: 2, 
-    name: "Jane Smith",
-    itemLogs: [
-      { 
-        id: 3,
-        date: "2024-03-18",
-        items: [
-          { name: "Dress", quantity: 2, rate: 10.00 }
-        ]
-      }
-    ]
-  }
-];
+// Types for our API data
+interface Item {
+  name: string;
+  quantity: number;
+  rate: number;
+}
+
+interface ItemLog {
+  id: number;
+  date: string;
+  items: Item[];
+}
+
+interface Client {
+  id: number;
+  name: string;
+  itemLogs: ItemLog[];
+}
+
+// Mock API function - replace with actual API call
+const fetchClients = async (): Promise<Client[]> => {
+  // Simulating API call
+  return [
+    { 
+      id: 1, 
+      name: "John Doe",
+      itemLogs: [
+        { 
+          id: 1,
+          date: "2024-03-20",
+          items: [
+            { name: "T-Shirt", quantity: 3, rate: 5.00 },
+            { name: "Pants", quantity: 2, rate: 7.50 }
+          ]
+        },
+        { 
+          id: 2,
+          date: "2024-03-25",
+          items: [
+            { name: "Dress Shirt", quantity: 1, rate: 6.00 }
+          ]
+        }
+      ]
+    },
+    { 
+      id: 2, 
+      name: "Jane Smith",
+      itemLogs: [
+        { 
+          id: 3,
+          date: "2024-03-18",
+          items: [
+            { name: "Dress", quantity: 2, rate: 10.00 }
+          ]
+        }
+      ]
+    }
+  ];
+};
 
 const ITEMS_PER_PAGE = 5;
 
 export default function ItemLogs() {
-  const [selectedClient, setSelectedClient] = useState<typeof clientsData[0] | null>(null);
+  const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const { toast } = useToast();
+
+  // Query for fetching clients
+  const { data: clients = [], isLoading } = useQuery({
+    queryKey: ['clients'],
+    queryFn: fetchClients,
+  });
 
   const handleBackClick = () => {
     setSelectedClient(null);
@@ -88,33 +117,37 @@ export default function ItemLogs() {
     });
   };
 
-  const calculateTotal = (items: { quantity: number; rate: number }[]) => {
+  const calculateTotal = (items: Item[]) => {
     return items.reduce((total, item) => total + (item.quantity * item.rate), 0);
   };
 
   // Pagination logic
   const totalPages = selectedClient
     ? Math.ceil(selectedClient.itemLogs.length / ITEMS_PER_PAGE)
-    : Math.ceil(clientsData.length / ITEMS_PER_PAGE);
+    : Math.ceil(clients.length / ITEMS_PER_PAGE);
 
   const paginatedData = selectedClient
     ? selectedClient.itemLogs.slice(
         (currentPage - 1) * ITEMS_PER_PAGE,
         currentPage * ITEMS_PER_PAGE
       )
-    : clientsData.slice(
+    : clients.slice(
         (currentPage - 1) * ITEMS_PER_PAGE,
         currentPage * ITEMS_PER_PAGE
       );
+
+  if (isLoading) {
+    return <div className="flex justify-center items-center h-64">Loading...</div>;
+  }
 
   if (!selectedClient) {
     return (
       <div className="space-y-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold">Select Client for Item Logging</h1>
+          <h1 className="text-2xl md:text-3xl font-bold">Select Client for Item Logging</h1>
         </div>
 
-        <div className="rounded-md border overflow-x-auto">
+        <div className="rounded-md border overflow-x-auto bg-white shadow-sm">
           <Table>
             <TableHeader>
               <TableRow>
@@ -126,11 +159,16 @@ export default function ItemLogs() {
               {paginatedData.map((client) => (
                 <TableRow 
                   key={client.id} 
-                  className="cursor-pointer hover:bg-muted"
+                  className="cursor-pointer hover:bg-gray-50"
                   onClick={() => setSelectedClient(client)}
                 >
                   <TableCell className="font-medium">{client.name}</TableCell>
-                  <TableCell>{client.itemLogs.length}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <Package2 className="w-4 h-4 text-[#9b87f5]" />
+                      {client.itemLogs.length}
+                    </div>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -171,27 +209,20 @@ export default function ItemLogs() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="flex items-center gap-4">
-          <Button variant="ghost" size="icon" onClick={handleBackClick}>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={handleBackClick}
+            className="hover:bg-gray-100"
+          >
+            <ArrowLeft className="w-5 h-5 text-[#7E69AB]" />
             <span className="sr-only">Back</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="m15 18-6-6 6-6" />
-            </svg>
           </Button>
           <h1 className="text-2xl sm:text-3xl font-bold">{selectedClient.name}'s Item Logs</h1>
         </div>
         <Dialog>
           <DialogTrigger asChild>
-            <Button>
+            <Button className="bg-[#9b87f5] hover:bg-[#7E69AB]">
               <Plus className="w-4 h-4 mr-2" />
               Add Log Entry
             </Button>
@@ -223,14 +254,16 @@ export default function ItemLogs() {
                 </div>
               </div>
               <DialogFooter>
-                <Button type="submit">Add Log Entry</Button>
+                <Button type="submit" className="bg-[#9b87f5] hover:bg-[#7E69AB]">
+                  Add Log Entry
+                </Button>
               </DialogFooter>
             </form>
           </DialogContent>
         </Dialog>
       </div>
 
-      <div className="rounded-md border overflow-x-auto">
+      <div className="rounded-md border overflow-x-auto bg-white shadow-sm">
         <Table>
           <TableHeader>
             <TableRow>
@@ -242,17 +275,28 @@ export default function ItemLogs() {
           <TableBody>
             {paginatedData.map((log) => (
               <TableRow key={log.id}>
-                <TableCell>{log.date}</TableCell>
                 <TableCell>
-                  <ul className="list-disc list-inside">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="w-4 h-4 text-[#6E59A5]" />
+                    {log.date}
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <ul className="list-disc list-inside space-y-1">
                     {log.items.map((item, index) => (
-                      <li key={index}>
+                      <li key={index} className="flex items-center gap-2">
+                        <Package2 className="w-4 h-4 text-[#9b87f5]" />
                         {item.name} x{item.quantity} (${item.rate.toFixed(2)} each)
                       </li>
                     ))}
                   </ul>
                 </TableCell>
-                <TableCell>${calculateTotal(log.items).toFixed(2)}</TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    <DollarSign className="w-4 h-4 text-[#7E69AB]" />
+                    ${calculateTotal(log.items).toFixed(2)}
+                  </div>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
