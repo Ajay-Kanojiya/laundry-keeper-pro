@@ -22,7 +22,7 @@ const menuItems = [
 export function AppSidebar() {
   return (
     <Sidebar>
-      <SidebarContent>
+      <SidebarContent className="bg-sidebar">
         <SidebarGroup>
           <SidebarGroupLabel>Laundry Management</SidebarGroupLabel>
           <SidebarGroupContent>
