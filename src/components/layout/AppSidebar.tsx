@@ -24,20 +24,20 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent className="bg-sidebar">
         <SidebarGroup>
-          <SidebarGroupLabel className="px-2 py-4 text-lg font-semibold">
+          <SidebarGroupLabel className="px-4 py-6 text-xl font-semibold border-b border-sidebar-border">
             Laundry Management
           </SidebarGroupLabel>
-          <SidebarGroupContent>
+          <SidebarGroupContent className="py-4">
             <SidebarMenu>
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <Link 
                       to={item.path}
-                      className="flex items-center gap-3 px-4 py-3 hover:bg-sidebar-accent rounded-md transition-colors"
+                      className="flex items-center gap-4 px-6 py-4 hover:bg-sidebar-accent rounded-md transition-colors text-sidebar-foreground"
                     >
-                      <item.icon className="w-5 h-5" />
-                      <span className="text-base">{item.title}</span>
+                      <item.icon className="w-6 h-6" />
+                      <span className="text-base font-medium">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
