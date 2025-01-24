@@ -21,7 +21,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import { useState } from "react";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
+// Move this to a separate file later (e.g., src/data/mockData.ts)
 const clientsData = [
   { 
     id: 1, 
@@ -59,12 +68,16 @@ const clientsData = [
   }
 ];
 
+const ITEMS_PER_PAGE = 5;
+
 export default function ItemLogs() {
   const [selectedClient, setSelectedClient] = useState<typeof clientsData[0] | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
   const { toast } = useToast();
 
   const handleBackClick = () => {
     setSelectedClient(null);
+    setCurrentPage(1);
   };
 
   const handleAddLog = (event: React.FormEvent<HTMLFormElement>) => {
@@ -79,6 +92,21 @@ export default function ItemLogs() {
     return items.reduce((total, item) => total + (item.quantity * item.rate), 0);
   };
 
+  // Pagination logic
+  const totalPages = selectedClient
+    ? Math.ceil(selectedClient.itemLogs.length / ITEMS_PER_PAGE)
+    : Math.ceil(clientsData.length / ITEMS_PER_PAGE);
+
+  const paginatedData = selectedClient
+    ? selectedClient.itemLogs.slice(
+        (currentPage - 1) * ITEMS_PER_PAGE,
+        currentPage * ITEMS_PER_PAGE
+      )
+    : clientsData.slice(
+        (currentPage - 1) * ITEMS_PER_PAGE,
+        currentPage * ITEMS_PER_PAGE
+      );
+
   if (!selectedClient) {
     return (
       <div className="space-y-6">
@@ -86,7 +114,7 @@ export default function ItemLogs() {
           <h1 className="text-3xl font-bold">Select Client for Item Logging</h1>
         </div>
 
-        <div className="rounded-md border">
+        <div className="rounded-md border overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>
@@ -95,7 +123,7 @@ export default function ItemLogs() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {clientsData.map((client) => (
+              {paginatedData.map((client) => (
                 <TableRow 
                   key={client.id} 
                   className="cursor-pointer hover:bg-muted"
@@ -108,13 +136,40 @@ export default function ItemLogs() {
             </TableBody>
           </Table>
         </div>
+
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious 
+                onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                className={currentPage === 1 ? 'pointer-events-none opacity-50' : ''}
+              />
+            </PaginationItem>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <PaginationItem key={page}>
+                <PaginationLink
+                  onClick={() => setCurrentPage(page)}
+                  isActive={currentPage === page}
+                >
+                  {page}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+            <PaginationItem>
+              <PaginationNext
+                onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                className={currentPage === totalPages ? 'pointer-events-none opacity-50' : ''}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="flex items-center gap-4">
           <Button variant="ghost" size="icon" onClick={handleBackClick}>
             <span className="sr-only">Back</span>
@@ -132,7 +187,7 @@ export default function ItemLogs() {
               <path d="m15 18-6-6 6-6" />
             </svg>
           </Button>
-          <h1 className="text-3xl font-bold">{selectedClient.name}'s Item Logs</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold">{selectedClient.name}'s Item Logs</h1>
         </div>
         <Dialog>
           <DialogTrigger asChild>
@@ -141,7 +196,7 @@ export default function ItemLogs() {
               Add Log Entry
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
               <DialogTitle>Add New Log Entry</DialogTitle>
               <DialogDescription>
@@ -175,7 +230,7 @@ export default function ItemLogs() {
         </Dialog>
       </div>
 
-      <div className="rounded-md border">
+      <div className="rounded-md border overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>
@@ -185,7 +240,7 @@ export default function ItemLogs() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {selectedClient.itemLogs.map((log) => (
+            {paginatedData.map((log) => (
               <TableRow key={log.id}>
                 <TableCell>{log.date}</TableCell>
                 <TableCell>
@@ -203,6 +258,33 @@ export default function ItemLogs() {
           </TableBody>
         </Table>
       </div>
+
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious 
+              onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+              className={currentPage === 1 ? 'pointer-events-none opacity-50' : ''}
+            />
+          </PaginationItem>
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <PaginationItem key={page}>
+              <PaginationLink
+                onClick={() => setCurrentPage(page)}
+                isActive={currentPage === page}
+              >
+                {page}
+              </PaginationLink>
+            </PaginationItem>
+          ))}
+          <PaginationItem>
+            <PaginationNext
+              onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+              className={currentPage === totalPages ? 'pointer-events-none opacity-50' : ''}
+            />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </div>
   );
 }
