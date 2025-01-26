@@ -28,8 +28,9 @@ const Login = () => {
         <CardHeader className="space-y-1 text-center">
           <div className="flex justify-center mb-4">
             <div className="relative">
-              <GiWashingMachine className="h-16 w-16 text-laundry-blue animate-pulse" />
-              <div className="absolute inset-0 bg-gradient-to-br from-laundry-yellow via-laundry-blue to-primary opacity-50 rounded-full blur-sm" />
+              <GiWashingMachine className="h-20 w-20 text-blue-500 animate-pulse" />
+              <div className="absolute inset-0 bg-gradient-to-br from-yellow-300 via-blue-400 to-purple-500 opacity-75 rounded-full blur-md" />
+              <div className="absolute inset-0 bg-white/20 rounded-full shadow-lg" />
             </div>
           </div>
           <CardTitle className="text-2xl font-bold">LaundryKeeper Pro</CardTitle>
