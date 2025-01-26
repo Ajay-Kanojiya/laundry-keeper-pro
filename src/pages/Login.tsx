@@ -27,7 +27,10 @@ const Login = () => {
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1 text-center">
           <div className="flex justify-center mb-4">
-            <GiWashingMachine className="h-12 w-12 text-primary" />
+            <div className="relative">
+              <GiWashingMachine className="h-16 w-16 text-laundry-blue animate-pulse" />
+              <div className="absolute inset-0 bg-gradient-to-br from-laundry-yellow via-laundry-blue to-primary opacity-50 rounded-full blur-sm" />
+            </div>
           </div>
           <CardTitle className="text-2xl font-bold">LaundryKeeper Pro</CardTitle>
           <CardDescription>
