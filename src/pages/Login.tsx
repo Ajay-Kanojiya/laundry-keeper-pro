@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { FcGoogle } from "react-icons/fc";
+import { GiWashingMachine } from "react-icons/gi";
 import { useState } from "react";
 
 const Login = () => {
@@ -25,7 +26,10 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-2xl font-bold">Welcome back</CardTitle>
+          <div className="flex justify-center mb-4">
+            <GiWashingMachine className="h-12 w-12 text-primary" />
+          </div>
+          <CardTitle className="text-2xl font-bold">LaundryKeeper Pro</CardTitle>
           <CardDescription>
             Sign in to your laundry management account
           </CardDescription>
