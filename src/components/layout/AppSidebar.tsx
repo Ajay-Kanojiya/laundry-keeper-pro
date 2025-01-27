@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Users, ShoppingBag, FileText, Home, List } from "lucide-react";
 import { Link } from "react-router-dom";
+import { UserNav } from "./UserNav";
 
 const menuItems = [
   { title: "Dashboard", icon: Home, path: "/" },
@@ -24,8 +25,9 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent className="bg-sidebar">
         <SidebarGroup>
-          <SidebarGroupLabel className="px-4 py-6 text-xl font-semibold border-b border-sidebar-border">
+          <SidebarGroupLabel className="px-4 py-6 text-xl font-semibold border-b border-sidebar-border flex items-center justify-between">
             Laundry Management
+            <UserNav />
           </SidebarGroupLabel>
           <SidebarGroupContent className="py-4">
             <SidebarMenu>
