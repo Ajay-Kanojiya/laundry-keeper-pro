@@ -9,8 +9,8 @@ export function Layout() {
       <div className="min-h-screen flex w-full bg-background">
         <AppSidebar />
         <main className="flex-1">
-          <div className="border-b">
-            <div className="flex h-16 items-center px-4 justify-between">
+          <div className="border-b sticky top-0 bg-background z-50">
+            <div className="flex h-14 items-center px-4 justify-between">
               <SidebarTrigger className="md:hidden p-2 hover:bg-accent rounded-md" />
               <UserNav />
             </div>
