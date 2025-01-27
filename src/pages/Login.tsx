@@ -6,20 +6,51 @@ import { Separator } from "@/components/ui/separator";
 import { FcGoogle } from "react-icons/fc";
 import { GiWashingMachine } from "react-icons/gi";
 import { useState } from "react";
+import { auth } from "@/lib/firebase";
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/components/ui/use-toast";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const { toast } = useToast();
 
   const handleStandardLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // This will be implemented once Supabase is connected
-    console.log("Standard login clicked - waiting for Supabase integration", { email, password });
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      navigate("/");
+      toast({
+        title: "Success",
+        description: "Successfully logged in!",
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to login. Please check your credentials.",
+      });
+    }
   };
 
   const handleGoogleLogin = async () => {
-    // This will be implemented once Supabase is connected
-    console.log("Google login clicked - waiting for Supabase integration");
+    try {
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
+      navigate("/");
+      toast({
+        title: "Success",
+        description: "Successfully logged in with Google!",
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to login with Google.",
+      });
+    }
   };
 
   return (
@@ -27,7 +58,7 @@ const Login = () => {
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1 text-center">
           <div className="flex justify-center mb-4">
-            <GiWashingMachine className="h-12 w-12 text-primary" />
+            <GiWashingMachine className="h-20 w-20 text-primary animate-pulse" />
           </div>
           <CardTitle className="text-2xl font-bold">LaundryKeeper Pro</CardTitle>
           <CardDescription>
