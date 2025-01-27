@@ -7,30 +7,49 @@ import { FcGoogle } from "react-icons/fc";
 import { GiWashingMachine } from "react-icons/gi";
 import { useState } from "react";
 import { auth } from "@/lib/firebase";
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isSignUp, setIsSignUp] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleStandardLogin = async (e: React.FormEvent) => {
+  const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      if (isSignUp) {
+        await createUserWithEmailAndPassword(auth, email, password);
+        toast({
+          title: "Success",
+          description: "Account created successfully!",
+        });
+      } else {
+        await signInWithEmailAndPassword(auth, email, password);
+        toast({
+          title: "Success",
+          description: "Successfully logged in!",
+        });
+      }
       navigate("/");
-      toast({
-        title: "Success",
-        description: "Successfully logged in!",
-      });
-    } catch (error) {
+    } catch (error: any) {
+      let errorMessage = "Authentication failed. Please try again.";
+      
+      if (error.code === "auth/invalid-login-credentials") {
+        errorMessage = "Invalid email or password. Please try again.";
+      } else if (error.code === "auth/email-already-in-use") {
+        errorMessage = "This email is already registered. Please login instead.";
+      } else if (error.code === "auth/weak-password") {
+        errorMessage = "Password should be at least 6 characters long.";
+      }
+
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to login. Please check your credentials.",
+        description: errorMessage,
       });
     }
   };
@@ -62,11 +81,11 @@ const Login = () => {
           </div>
           <CardTitle className="text-2xl font-bold">LaundryKeeper Pro</CardTitle>
           <CardDescription>
-            Sign in to your laundry management account
+            {isSignUp ? "Create your account" : "Sign in to your account"}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <form onSubmit={handleStandardLogin} className="space-y-4">
+          <form onSubmit={handleAuth} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -89,9 +108,21 @@ const Login = () => {
               />
             </div>
             <Button type="submit" className="w-full">
-              Sign in
+              {isSignUp ? "Sign up" : "Sign in"}
             </Button>
           </form>
+
+          <div className="text-center">
+            <Button
+              variant="link"
+              onClick={() => setIsSignUp(!isSignUp)}
+              className="text-sm"
+            >
+              {isSignUp
+                ? "Already have an account? Sign in"
+                : "Don't have an account? Sign up"}
+            </Button>
+          </div>
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
