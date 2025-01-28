@@ -15,6 +15,22 @@ interface LogTableProps {
 }
 
 export function LogTable({ paginatedData, calculateTotal }: LogTableProps) {
+  const getStatusDisplay = (status: string | undefined) => {
+    if (!status) return 'N/A';
+    return status.charAt(0).toUpperCase() + status.slice(1);
+  };
+
+  const getStatusClass = (status: string | undefined) => {
+    switch (status) {
+      case 'completed':
+        return 'bg-portal-success/10 text-portal-success';
+      case 'pending':
+        return 'bg-portal-warning/10 text-portal-warning';
+      default:
+        return 'bg-portal-neutral/10 text-portal-neutral';
+    }
+  };
+
   return (
     <div className="rounded-lg border border-portal-border bg-white shadow-sm">
       <Table>
@@ -55,12 +71,8 @@ export function LogTable({ paginatedData, calculateTotal }: LogTableProps) {
                 </div>
               </TableCell>
               <TableCell>
-                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                  ${log.status === 'completed' ? 'bg-portal-success/10 text-portal-success' :
-                    log.status === 'pending' ? 'bg-portal-warning/10 text-portal-warning' :
-                    'bg-portal-neutral/10 text-portal-neutral'
-                  }`}>
-                  {log.status.charAt(0).toUpperCase() + log.status.slice(1)}
+                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusClass(log.status)}`}>
+                  {getStatusDisplay(log.status)}
                 </span>
               </TableCell>
               <TableCell className="text-right">
