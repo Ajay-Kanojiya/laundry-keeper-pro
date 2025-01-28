@@ -33,6 +33,15 @@ export const clientApi = {
       method: "POST",
       body: JSON.stringify(data),
     }),
+  updateClient: (id: number, data: Partial<Client>) =>
+    fetchApi<Client>(`/clients/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(data),
+    }),
+  deleteClient: (id: number) =>
+    fetchApi<void>(`/clients/${id}`, {
+      method: "DELETE",
+    }),
 };
 
 // Item APIs
@@ -42,6 +51,15 @@ export const itemApi = {
     fetchApi<Item>(`/clients/${clientId}/items`, {
       method: "POST",
       body: JSON.stringify(data),
+    }),
+  updateItem: (clientId: number, itemId: number, data: Partial<Item>) =>
+    fetchApi<Item>(`/clients/${clientId}/items/${itemId}`, {
+      method: "PATCH",
+      body: JSON.stringify(data),
+    }),
+  deleteItem: (clientId: number, itemId: number) =>
+    fetchApi<void>(`/clients/${clientId}/items/${itemId}`, {
+      method: "DELETE",
     }),
 };
 
@@ -66,15 +84,38 @@ export const invoiceApi = {
       method: "PATCH",
       body: JSON.stringify({ status }),
     }),
+  generateInvoice: (clientId: number, month: string) =>
+    fetchApi<Invoice>("/invoices/generate", {
+      method: "POST",
+      body: JSON.stringify({ clientId, month }),
+    }),
 };
 
-// Mock API responses for development (remove when real API is ready)
+// Mock data for development
 export const mockApi = {
   clients: [
-    { id: 1, name: "John Doe", email: "john@example.com", items: 12, status: "Active" },
-    { id: 2, name: "Jane Smith", email: "jane@example.com", items: 8, status: "Active" },
-    { id: 3, name: "Bob Johnson", email: "bob@example.com", items: 5, status: "Inactive" },
-  ] as Client[],
+    { 
+      id: 1, 
+      name: "John Doe", 
+      email: "john@example.com", 
+      items: 12, 
+      status: "Active" as const
+    },
+    { 
+      id: 2, 
+      name: "Jane Smith", 
+      email: "jane@example.com", 
+      items: 8, 
+      status: "Active" as const
+    },
+    { 
+      id: 3, 
+      name: "Bob Johnson", 
+      email: "bob@example.com", 
+      items: 5, 
+      status: "Inactive" as const
+    },
+  ],
 
   items: {
     1: [
@@ -83,7 +124,7 @@ export const mockApi = {
         item: "T-Shirt", 
         quantity: 3,
         rate: 5.00,
-        status: "Processing", 
+        status: "Processing" as const, 
         dateReceived: "2024-02-20" 
       },
       { 
@@ -91,10 +132,10 @@ export const mockApi = {
         item: "Pants", 
         quantity: 2,
         rate: 7.50,
-        status: "Ready", 
+        status: "Ready" as const, 
         dateReceived: "2024-02-19" 
       },
-    ] as Item[],
+    ],
   },
 
   invoices: [
@@ -103,7 +144,7 @@ export const mockApi = {
       clientName: "John Doe",
       month: "March 2024",
       totalAmount: 45.50,
-      status: "Paid",
+      status: "Paid" as const,
       generatedDate: "2024-03-31",
       paidDate: "2024-04-02"
     },
@@ -112,9 +153,9 @@ export const mockApi = {
       clientName: "Jane Smith",
       month: "March 2024",
       totalAmount: 20.00,
-      status: "Pending",
+      status: "Pending" as const,
       generatedDate: "2024-03-31",
       paidDate: null
     },
-  ] as Invoice[],
+  ],
 };
