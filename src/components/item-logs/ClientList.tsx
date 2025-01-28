@@ -6,7 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Package2 } from "lucide-react";
+import { Package2, User } from "lucide-react";
 import { Client } from "@/types";
 
 interface ClientListProps {
@@ -16,27 +16,41 @@ interface ClientListProps {
 
 export function ClientList({ paginatedData, onClientSelect }: ClientListProps) {
   return (
-    <div className="rounded-md border overflow-x-auto bg-white shadow-sm">
+    <div className="rounded-md border border-portal-border overflow-x-auto bg-white shadow-sm">
       <Table>
-        <TableHeader>
+        <TableHeader className="bg-portal-light">
           <TableRow>
-            <TableHead>Client Name</TableHead>
-            <TableHead>Total Logs</TableHead>
+            <TableHead className="text-portal-neutral font-medium">Client Name</TableHead>
+            <TableHead className="text-portal-neutral font-medium">Total Logs</TableHead>
+            <TableHead className="text-portal-neutral font-medium">Status</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {paginatedData.map((client) => (
             <TableRow 
               key={client.id} 
-              className="cursor-pointer hover:bg-gray-50"
+              className="cursor-pointer hover:bg-portal-light/50"
               onClick={() => onClientSelect(client)}
             >
-              <TableCell className="font-medium">{client.name}</TableCell>
               <TableCell>
                 <div className="flex items-center gap-2">
-                  <Package2 className="w-4 h-4 text-[#9b87f5]" />
-                  {client.itemLogs.length}
+                  <User className="w-4 h-4 text-portal-primary" />
+                  <span className="font-medium text-portal-secondary">{client.name}</span>
                 </div>
+              </TableCell>
+              <TableCell>
+                <div className="flex items-center gap-2 text-portal-neutral">
+                  <Package2 className="w-4 h-4 text-portal-info" />
+                  {client.itemLogs?.length || 0}
+                </div>
+              </TableCell>
+              <TableCell>
+                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                  ${client.status === 'active' ? 'bg-portal-success/10 text-portal-success' :
+                    'bg-portal-neutral/10 text-portal-neutral'
+                  }`}>
+                  {client.status}
+                </span>
               </TableCell>
             </TableRow>
           ))}

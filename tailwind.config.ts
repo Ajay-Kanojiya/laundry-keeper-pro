@@ -24,13 +24,17 @@ export default {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        laundry: {
-          primary: "#9b87f5",
-          secondary: "#7E69AB",
-          tertiary: "#6E59A5",
-          dark: "#1A1F2C",
-          light: "#D6BCFA",
-          neutral: "#8E9196",
+        portal: {
+          primary: "#0072C6",    // AWS-like blue
+          secondary: "#232F3E",  // Dark navy
+          accent: "#FF9900",     // AWS orange
+          neutral: "#666666",    // Text gray
+          light: "#F2F3F3",     // Light background
+          border: "#E6E6E6",    // Light border
+          success: "#1B8900",    // Success green
+          warning: "#FF9900",    // Warning orange
+          error: "#D13212",      // Error red
+          info: "#0073BB",       // Info blue
         },
         primary: {
           DEFAULT: "hsl(var(--primary))",

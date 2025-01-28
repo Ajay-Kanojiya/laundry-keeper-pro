@@ -6,7 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Calendar, DollarSign, Package2 } from "lucide-react";
+import { FileText, Package2, Calendar, DollarSign } from "lucide-react";
 import { ItemLog } from "@/types";
 
 interface LogTableProps {
@@ -16,39 +16,55 @@ interface LogTableProps {
 
 export function LogTable({ paginatedData, calculateTotal }: LogTableProps) {
   return (
-    <div className="rounded-md border overflow-x-auto bg-white shadow-sm">
+    <div className="rounded-md border border-portal-border overflow-x-auto bg-white">
       <Table>
-        <TableHeader>
+        <TableHeader className="bg-portal-light">
           <TableRow>
-            <TableHead>Date</TableHead>
-            <TableHead>Items</TableHead>
-            <TableHead>Total Amount</TableHead>
+            <TableHead className="text-portal-neutral font-medium">Date</TableHead>
+            <TableHead className="text-portal-neutral font-medium">Items</TableHead>
+            <TableHead className="text-portal-neutral font-medium">Total Amount</TableHead>
+            <TableHead className="text-portal-neutral font-medium">Status</TableHead>
+            <TableHead className="text-portal-neutral font-medium text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {paginatedData.map((log) => (
-            <TableRow key={log.id}>
-              <TableCell>
+            <TableRow key={log.id} className="hover:bg-portal-light/50">
+              <TableCell className="text-portal-secondary">
                 <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-[#6E59A5]" />
+                  <Calendar className="w-4 h-4 text-portal-info" />
                   {log.date}
                 </div>
               </TableCell>
               <TableCell>
-                <ul className="list-disc list-inside space-y-1">
+                <ul className="space-y-1">
                   {(log.items || []).map((item, index) => (
-                    <li key={index} className="flex items-center gap-2">
-                      <Package2 className="w-4 h-4 text-[#9b87f5]" />
+                    <li key={index} className="flex items-center gap-2 text-portal-neutral">
+                      <Package2 className="w-4 h-4 text-portal-primary" />
                       {item.name} x{item.quantity} (${item.rate.toFixed(2)} each)
                     </li>
                   ))}
                 </ul>
               </TableCell>
-              <TableCell>
+              <TableCell className="text-portal-secondary font-medium">
                 <div className="flex items-center gap-2">
-                  <DollarSign className="w-4 h-4 text-[#7E69AB]" />
+                  <DollarSign className="w-4 h-4 text-portal-success" />
                   ${calculateTotal(log.items || []).toFixed(2)}
                 </div>
+              </TableCell>
+              <TableCell>
+                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                  ${log.status === 'completed' ? 'bg-portal-success/10 text-portal-success' :
+                    log.status === 'pending' ? 'bg-portal-warning/10 text-portal-warning' :
+                    'bg-portal-neutral/10 text-portal-neutral'
+                  }`}>
+                  {log.status}
+                </span>
+              </TableCell>
+              <TableCell className="text-right">
+                <button className="inline-flex items-center justify-center w-8 h-8 rounded-full hover:bg-portal-light text-portal-neutral">
+                  <FileText className="w-4 h-4" />
+                </button>
               </TableCell>
             </TableRow>
           ))}
