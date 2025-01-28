@@ -27,15 +27,15 @@ export function LogEntryDialog({ onSubmit }: LogEntryDialogProps) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle className="text-portal-secondary">Add New Log Entry</DialogTitle>
-          <DialogDescription className="text-portal-neutral">
+          <DialogTitle className="text-xl font-semibold text-portal-secondary">Add New Log Entry</DialogTitle>
+          <DialogDescription className="text-sm text-portal-neutral">
             Enter the details for the new log entry.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={onSubmit}>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="date" className="text-portal-secondary">Date</Label>
+              <Label htmlFor="date" className="text-sm font-medium text-portal-secondary">Date</Label>
               <Input 
                 id="date" 
                 type="date" 
@@ -43,7 +43,7 @@ export function LogEntryDialog({ onSubmit }: LogEntryDialogProps) {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="item" className="text-portal-secondary">Item</Label>
+              <Label htmlFor="item" className="text-sm font-medium text-portal-secondary">Item</Label>
               <Input 
                 id="item" 
                 placeholder="Enter item name"
@@ -51,7 +51,7 @@ export function LogEntryDialog({ onSubmit }: LogEntryDialogProps) {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="quantity" className="text-portal-secondary">Quantity</Label>
+              <Label htmlFor="quantity" className="text-sm font-medium text-portal-secondary">Quantity</Label>
               <Input 
                 id="quantity" 
                 type="number" 
@@ -60,7 +60,7 @@ export function LogEntryDialog({ onSubmit }: LogEntryDialogProps) {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="rate" className="text-portal-secondary">Rate</Label>
+              <Label htmlFor="rate" className="text-sm font-medium text-portal-secondary">Rate</Label>
               <Input 
                 id="rate" 
                 type="number" 

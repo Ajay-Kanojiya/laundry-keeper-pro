@@ -62,7 +62,8 @@ export const fetchClients = async (): Promise<Client[]> => {
             status: "Processing",
             dateReceived: "2024-02-20"
           }
-        ]
+        ],
+        status: "completed"
       }
     ]
   }));
@@ -122,21 +123,56 @@ export const mockApi = {
       name: "John Doe", 
       email: "john@example.com", 
       items: 12, 
-      status: "Active" as const
+      status: "Active" as const,
+      itemLogs: [
+        {
+          id: 1,
+          date: "2024-03-01",
+          items: [
+            { 
+              id: 1, 
+              name: "T-Shirt", 
+              quantity: 3,
+              rate: 5.00,
+              status: "Processing" as const, 
+              dateReceived: "2024-02-20" 
+            }
+          ],
+          status: "completed" as const
+        }
+      ]
     },
     { 
       id: 2, 
       name: "Jane Smith", 
       email: "jane@example.com", 
       items: 8, 
-      status: "Active" as const
+      status: "Active" as const,
+      itemLogs: [
+        {
+          id: 2,
+          date: "2024-03-02",
+          items: [
+            { 
+              id: 2, 
+              name: "Pants", 
+              quantity: 2,
+              rate: 7.50,
+              status: "Ready" as const, 
+              dateReceived: "2024-02-19" 
+            }
+          ],
+          status: "pending" as const
+        }
+      ]
     },
     { 
       id: 3, 
       name: "Bob Johnson", 
       email: "bob@example.com", 
       items: 5, 
-      status: "Inactive" as const
+      status: "Inactive" as const,
+      itemLogs: []
     },
   ],
   items: {

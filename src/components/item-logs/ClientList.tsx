@@ -16,13 +16,13 @@ interface ClientListProps {
 
 export function ClientList({ paginatedData, onClientSelect }: ClientListProps) {
   return (
-    <div className="rounded-md border border-portal-border overflow-x-auto bg-white shadow-sm">
+    <div className="rounded-lg border border-portal-border bg-white shadow-sm">
       <Table>
-        <TableHeader className="bg-portal-light">
-          <TableRow>
-            <TableHead className="text-portal-neutral font-medium">Client Name</TableHead>
-            <TableHead className="text-portal-neutral font-medium">Total Logs</TableHead>
-            <TableHead className="text-portal-neutral font-medium">Status</TableHead>
+        <TableHeader>
+          <TableRow className="bg-portal-light hover:bg-portal-light">
+            <TableHead className="text-sm font-semibold text-portal-secondary">Client Name</TableHead>
+            <TableHead className="text-sm font-semibold text-portal-secondary">Total Logs</TableHead>
+            <TableHead className="text-sm font-semibold text-portal-secondary">Status</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -41,7 +41,7 @@ export function ClientList({ paginatedData, onClientSelect }: ClientListProps) {
               <TableCell>
                 <div className="flex items-center gap-2 text-portal-neutral">
                   <Package2 className="w-4 h-4 text-portal-info" />
-                  {client.itemLogs?.length || 0}
+                  <span className="text-sm">{client.itemLogs?.length || 0}</span>
                 </div>
               </TableCell>
               <TableCell>
