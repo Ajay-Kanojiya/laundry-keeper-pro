@@ -4,7 +4,7 @@ export interface Client {
   email: string;
   items: number;
   status: "Active" | "Inactive";
-  itemLogs: ItemLog[];
+  itemLogs?: ItemLog[];
 }
 
 export interface Item {
@@ -20,6 +20,7 @@ export interface ItemLog {
   id: number;
   date: string;
   items: Item[];
+  status: "completed" | "pending" | "cancelled";
 }
 
 export interface Invoice {

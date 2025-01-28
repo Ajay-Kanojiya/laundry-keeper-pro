@@ -46,7 +46,7 @@ export function ClientList({ paginatedData, onClientSelect }: ClientListProps) {
               </TableCell>
               <TableCell>
                 <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                  ${client.status === 'active' ? 'bg-portal-success/10 text-portal-success' :
+                  ${client.status === 'Active' ? 'bg-portal-success/10 text-portal-success' :
                     'bg-portal-neutral/10 text-portal-neutral'
                   }`}>
                   {client.status}
