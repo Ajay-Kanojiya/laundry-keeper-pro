@@ -4,11 +4,12 @@ export interface Client {
   email: string;
   items: number;
   status: "Active" | "Inactive";
+  itemLogs: ItemLog[];
 }
 
 export interface Item {
   id: number;
-  item: string;
+  name: string;
   quantity: number;
   rate: number;
   status: "Processing" | "Ready" | "Delivered";

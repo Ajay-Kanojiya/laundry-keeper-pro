@@ -44,7 +44,30 @@ export const clientApi = {
     }),
 };
 
-// Item APIs
+// Export the fetchClients function
+export const fetchClients = async (): Promise<Client[]> => {
+  // For development, return mock data
+  return mockApi.clients.map(client => ({
+    ...client,
+    itemLogs: [
+      {
+        id: 1,
+        date: "2024-03-01",
+        items: [
+          {
+            id: 1,
+            name: "T-Shirt",
+            quantity: 3,
+            rate: 5.00,
+            status: "Processing",
+            dateReceived: "2024-02-20"
+          }
+        ]
+      }
+    ]
+  }));
+};
+
 export const itemApi = {
   getItems: (clientId: number) => fetchApi<Item[]>(`/clients/${clientId}/items`),
   createItem: (clientId: number, data: Omit<Item, "id">) =>

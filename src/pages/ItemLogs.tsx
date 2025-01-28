@@ -8,7 +8,7 @@ import { ClientList } from "@/components/item-logs/ClientList";
 import { LogEntryDialog } from "@/components/item-logs/LogEntryDialog";
 import { LogTable } from "@/components/item-logs/LogTable";
 import { PaginationControls } from "@/components/item-logs/PaginationControls";
-import { Client } from "@/types";
+import { Client, Item } from "@/types";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -35,7 +35,7 @@ export default function ItemLogs() {
     });
   };
 
-  const calculateTotal = (items: any[]) => {
+  const calculateTotal = (items: Item[]) => {
     return items.reduce((total, item) => total + (item.quantity * item.rate), 0);
   };
 
