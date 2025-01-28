@@ -121,17 +121,17 @@ export default function ItemLogs() {
     return items.reduce((total, item) => total + (item.quantity * item.rate), 0);
   };
 
-  // Pagination logic
+  // Pagination logic with safety checks
   const totalPages = selectedClient
-    ? Math.ceil(selectedClient.itemLogs.length / ITEMS_PER_PAGE)
-    : Math.ceil(clients.length / ITEMS_PER_PAGE);
+    ? Math.ceil((selectedClient.itemLogs?.length || 0) / ITEMS_PER_PAGE)
+    : Math.ceil((clients?.length || 0) / ITEMS_PER_PAGE);
 
   const paginatedData = selectedClient
-    ? selectedClient.itemLogs.slice(
+    ? (selectedClient.itemLogs || []).slice(
         (currentPage - 1) * ITEMS_PER_PAGE,
         currentPage * ITEMS_PER_PAGE
       )
-    : clients.slice(
+    : (clients || []).slice(
         (currentPage - 1) * ITEMS_PER_PAGE,
         currentPage * ITEMS_PER_PAGE
       );
@@ -218,7 +218,7 @@ export default function ItemLogs() {
             <ArrowLeft className="w-5 h-5 text-[#7E69AB]" />
             <span className="sr-only">Back</span>
           </Button>
-          <h1 className="text-2xl sm:text-3xl font-bold">{selectedClient.name}'s Item Logs</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold">{selectedClient?.name}'s Item Logs</h1>
         </div>
         <Dialog>
           <DialogTrigger asChild>
@@ -283,7 +283,7 @@ export default function ItemLogs() {
                 </TableCell>
                 <TableCell>
                   <ul className="list-disc list-inside space-y-1">
-                    {log.items.map((item, index) => (
+                    {(log.items || []).map((item, index) => (
                       <li key={index} className="flex items-center gap-2">
                         <Package2 className="w-4 h-4 text-[#9b87f5]" />
                         {item.name} x{item.quantity} (${item.rate.toFixed(2)} each)
@@ -294,7 +294,7 @@ export default function ItemLogs() {
                 <TableCell>
                   <div className="flex items-center gap-2">
                     <DollarSign className="w-4 h-4 text-[#7E69AB]" />
-                    ${calculateTotal(log.items).toFixed(2)}
+                    ${calculateTotal(log.items || []).toFixed(2)}
                   </div>
                 </TableCell>
               </TableRow>
@@ -303,32 +303,34 @@ export default function ItemLogs() {
         </Table>
       </div>
 
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious 
-              onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-              className={currentPage === 1 ? 'pointer-events-none opacity-50' : ''}
-            />
-          </PaginationItem>
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-            <PaginationItem key={page}>
-              <PaginationLink
-                onClick={() => setCurrentPage(page)}
-                isActive={currentPage === page}
-              >
-                {page}
-              </PaginationLink>
+      {totalPages > 0 && (
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious 
+                onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                className={currentPage === 1 ? 'pointer-events-none opacity-50' : ''}
+              />
             </PaginationItem>
-          ))}
-          <PaginationItem>
-            <PaginationNext
-              onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-              className={currentPage === totalPages ? 'pointer-events-none opacity-50' : ''}
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <PaginationItem key={page}>
+                <PaginationLink
+                  onClick={() => setCurrentPage(page)}
+                  isActive={currentPage === page}
+                >
+                  {page}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+            <PaginationItem>
+              <PaginationNext
+                onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                className={currentPage === totalPages ? 'pointer-events-none opacity-50' : ''}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
     </div>
   );
 }
