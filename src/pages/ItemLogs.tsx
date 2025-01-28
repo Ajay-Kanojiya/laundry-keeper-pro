@@ -8,7 +8,7 @@ import { ClientList } from "@/components/item-logs/ClientList";
 import { LogEntryDialog } from "@/components/item-logs/LogEntryDialog";
 import { LogTable } from "@/components/item-logs/LogTable";
 import { PaginationControls } from "@/components/item-logs/PaginationControls";
-import { Client, Item } from "@/types";
+import { Client, Item, ItemLog } from "@/types";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -42,17 +42,17 @@ export default function ItemLogs() {
   // Pagination logic with safety checks
   const totalPages = selectedClient
     ? Math.ceil((selectedClient.itemLogs?.length || 0) / ITEMS_PER_PAGE)
-    : Math.ceil((clients?.length || 0) / ITEMS_PER_PAGE);
+    : Math.ceil(clients.length / ITEMS_PER_PAGE);
 
   const paginatedData = selectedClient
     ? (selectedClient.itemLogs || []).slice(
         (currentPage - 1) * ITEMS_PER_PAGE,
         currentPage * ITEMS_PER_PAGE
-      )
-    : (clients || []).slice(
+      ) as ItemLog[]
+    : clients.slice(
         (currentPage - 1) * ITEMS_PER_PAGE,
         currentPage * ITEMS_PER_PAGE
-      );
+      ) as Client[];
 
   if (isLoading) {
     return <div className="flex justify-center items-center h-64">Loading...</div>;
@@ -66,7 +66,7 @@ export default function ItemLogs() {
         </div>
 
         <ClientList 
-          paginatedData={paginatedData} 
+          paginatedData={paginatedData as Client[]} 
           onClientSelect={setSelectedClient} 
         />
 
@@ -98,7 +98,7 @@ export default function ItemLogs() {
       </div>
 
       <LogTable 
-        paginatedData={paginatedData} 
+        paginatedData={paginatedData as ItemLog[]} 
         calculateTotal={calculateTotal}
       />
 
