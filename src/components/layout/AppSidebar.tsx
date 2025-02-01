@@ -9,7 +9,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Home, Users, ShoppingBag, FileText, Database, CreditCard, FileDown, Settings } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { UserNav } from "./UserNav";
 
 const menuItems = [
@@ -27,16 +27,18 @@ const accountItems = [
 ];
 
 export function AppSidebar() {
+  const location = useLocation();
+
   return (
-    <Sidebar className="border-r border-[#E6E6E6] bg-white">
+    <Sidebar className="border-r border-portal-border bg-white">
       <SidebarContent>
-        <div className="px-6 py-5 border-b border-[#E6E6E6]">
-          <h1 className="text-xl font-semibold text-[#232F3E]">LaundryKeeper Pro</h1>
-          <p className="text-sm text-[#8E9196] mt-1">Customer Portal</p>
+        <div className="px-6 py-5 border-b border-portal-border">
+          <h1 className="text-xl font-semibold text-portal-secondary">LaundryKeeper Pro</h1>
+          <p className="text-sm text-portal-neutral mt-1">Customer Portal</p>
         </div>
         
         <SidebarGroup>
-          <SidebarGroupLabel className="px-6 py-3 text-sm font-medium text-[#8E9196]">
+          <SidebarGroupLabel className="px-6 py-3 text-sm font-medium text-portal-neutral">
             Main Menu
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -46,9 +48,11 @@ export function AppSidebar() {
                   <SidebarMenuButton asChild>
                     <Link 
                       to={item.path}
-                      className="flex items-center gap-3 px-6 py-2.5 text-[#555555] hover:bg-[#F8F9FA] hover:text-[#232F3E] rounded-md transition-colors group"
+                      className={`flex items-center gap-3 px-6 py-2.5 text-portal-neutral hover:bg-portal-light hover:text-portal-secondary rounded-md transition-colors group ${
+                        location.pathname === item.path ? 'bg-portal-light text-portal-secondary' : ''
+                      }`}
                     >
-                      <item.icon className="w-5 h-5" style={{ color: item.color }} />
+                      <item.icon className="w-5 h-5" />
                       <span className="text-sm font-medium">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
@@ -59,7 +63,7 @@ export function AppSidebar() {
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel className="px-6 py-3 text-sm font-medium text-[#8E9196]">
+          <SidebarGroupLabel className="px-6 py-3 text-sm font-medium text-portal-neutral">
             Account Management
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -69,9 +73,11 @@ export function AppSidebar() {
                   <SidebarMenuButton asChild>
                     <Link 
                       to={item.path}
-                      className="flex items-center gap-3 px-6 py-2.5 text-[#555555] hover:bg-[#F8F9FA] hover:text-[#232F3E] rounded-md transition-colors group"
+                      className={`flex items-center gap-3 px-6 py-2.5 text-portal-neutral hover:bg-portal-light hover:text-portal-secondary rounded-md transition-colors group ${
+                        location.pathname === item.path ? 'bg-portal-light text-portal-secondary' : ''
+                      }`}
                     >
-                      <item.icon className="w-5 h-5" style={{ color: item.color }} />
+                      <item.icon className="w-5 h-5" />
                       <span className="text-sm font-medium">{item.title}</span>
                     </Link>
                   </SidebarMenuButton>
