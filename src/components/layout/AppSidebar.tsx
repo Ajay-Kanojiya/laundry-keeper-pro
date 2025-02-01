@@ -13,11 +13,11 @@ import { Link } from "react-router-dom";
 import { UserNav } from "./UserNav";
 
 const menuItems = [
-  { title: "Dashboard", icon: Home, path: "/", color: "#0EA5E9" },
-  { title: "Clients", icon: Users, path: "/clients", color: "#0EA5E9" },
-  { title: "Items", icon: ShoppingBag, path: "/items", color: "#0EA5E9" },
-  { title: "Item Logs", icon: Database, path: "/item-logs", color: "#0EA5E9" },
-  { title: "Invoices", icon: FileText, path: "/invoices", color: "#0EA5E9" },
+  { title: "Dashboard", icon: Home, path: "/", color: "#8E9196" },
+  { title: "Clients", icon: Users, path: "/clients", color: "#8E9196" },
+  { title: "Items", icon: ShoppingBag, path: "/items", color: "#8E9196" },
+  { title: "Item Logs", icon: Database, path: "/item-logs", color: "#8E9196" },
+  { title: "Invoices", icon: FileText, path: "/invoices", color: "#8E9196" },
 ];
 
 const accountItems = [
