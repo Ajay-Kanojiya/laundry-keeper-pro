@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/table";
 import { FileText, Package2, Calendar, DollarSign } from "lucide-react";
 import { ItemLog } from "@/types";
+import { useState } from "react";
 
 interface LogTableProps {
   paginatedData: ItemLog[];
@@ -15,6 +16,8 @@ interface LogTableProps {
 }
 
 export function LogTable({ paginatedData, calculateTotal }: LogTableProps) {
+  const [selectedRow, setSelectedRow] = useState<string | null>(null);
+
   const getStatusDisplay = (status: string | undefined) => {
     if (!status) return 'N/A';
     return status.charAt(0).toUpperCase() + status.slice(1);
@@ -23,12 +26,16 @@ export function LogTable({ paginatedData, calculateTotal }: LogTableProps) {
   const getStatusClass = (status: string | undefined) => {
     switch (status) {
       case 'completed':
-        return 'bg-portal-success/10 text-portal-success';
+        return 'bg-[#ECFDF3] text-[#027A48] border border-[#ABEFC6]';
       case 'pending':
-        return 'bg-portal-warning/10 text-portal-warning';
+        return 'bg-[#FFF8F0] text-[#B93815] border border-[#FEDF89]';
       default:
-        return 'bg-portal-neutral/10 text-portal-neutral';
+        return 'bg-portal-neutral/10 text-portal-neutral border border-portal-neutral/20';
     }
+  };
+
+  const handleRowClick = (id: string) => {
+    setSelectedRow(id === selectedRow ? null : id);
   };
 
   return (
@@ -45,7 +52,15 @@ export function LogTable({ paginatedData, calculateTotal }: LogTableProps) {
         </TableHeader>
         <TableBody>
           {paginatedData.map((log) => (
-            <TableRow key={log.id} className="hover:bg-portal-light/50">
+            <TableRow 
+              key={log.id} 
+              className={`cursor-pointer transition-colors ${
+                selectedRow === log.id 
+                  ? 'bg-[#F5F8FF] border-l-4 border-l-[#1570EF]' 
+                  : 'hover:bg-portal-light/50'
+              }`}
+              onClick={() => handleRowClick(log.id)}
+            >
               <TableCell className="text-portal-secondary font-medium">
                 <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4 text-portal-info" />
@@ -71,7 +86,7 @@ export function LogTable({ paginatedData, calculateTotal }: LogTableProps) {
                 </div>
               </TableCell>
               <TableCell>
-                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusClass(log.status)}`}>
+                <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${getStatusClass(log.status)}`}>
                   {getStatusDisplay(log.status)}
                 </span>
               </TableCell>
