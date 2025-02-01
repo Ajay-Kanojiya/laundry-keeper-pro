@@ -33,7 +33,6 @@ export function AppSidebar() {
       <SidebarContent>
         <div className="px-6 pb-5 border-b border-portal-border">
           <h1 className="text-xl font-semibold text-portal-secondary">LaundryKeeper Pro</h1>
-          <p className="text-sm text-portal-neutral mt-1">Customer Portal</p>
         </div>
         
         <SidebarGroup>
