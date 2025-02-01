@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/sidebar";
 import { Home, Users, ShoppingBag, FileText, Database, CreditCard, FileDown, Settings } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-import { UserNav } from "./UserNav";
 
 const menuItems = [
   { title: "Dashboard", icon: Home, path: "/", color: "#8E9196" },
@@ -30,9 +29,9 @@ export function AppSidebar() {
   const location = useLocation();
 
   return (
-    <Sidebar className="border-r border-portal-border bg-white">
+    <Sidebar className="border-r border-portal-border bg-white pt-4">
       <SidebarContent>
-        <div className="px-6 py-5 border-b border-portal-border">
+        <div className="px-6 pb-5 border-b border-portal-border">
           <h1 className="text-xl font-semibold text-portal-secondary">LaundryKeeper Pro</h1>
           <p className="text-sm text-portal-neutral mt-1">Customer Portal</p>
         </div>
