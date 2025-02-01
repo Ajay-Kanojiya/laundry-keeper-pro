@@ -16,7 +16,7 @@ interface LogTableProps {
 }
 
 export function LogTable({ paginatedData, calculateTotal }: LogTableProps) {
-  const [selectedRow, setSelectedRow] = useState<string | null>(null);
+  const [selectedRow, setSelectedRow] = useState<number | null>(null);
 
   const getStatusDisplay = (status: string | undefined) => {
     if (!status) return 'N/A';
@@ -34,7 +34,7 @@ export function LogTable({ paginatedData, calculateTotal }: LogTableProps) {
     }
   };
 
-  const handleRowClick = (id: string) => {
+  const handleRowClick = (id: number) => {
     setSelectedRow(id === selectedRow ? null : id);
   };
 
