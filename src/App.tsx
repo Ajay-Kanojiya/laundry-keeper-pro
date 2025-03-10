@@ -51,6 +51,13 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
+          
+          {/* Dashboard is accessible without login */}
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Dashboard />} />
+          </Route>
+          
+          {/* Protected routes */}
           <Route
             element={
               <ProtectedRoute>
@@ -58,12 +65,12 @@ const App = () => (
               </ProtectedRoute>
             }
           >
-            <Route path="/" element={<Dashboard />} />
             <Route path="/clients" element={<Clients />} />
             <Route path="/items" element={<Items />} />
             <Route path="/item-logs" element={<ItemLogs />} />
             <Route path="/invoices" element={<Invoices />} />
           </Route>
+          
           {/* Catch-all route to redirect to dashboard */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
