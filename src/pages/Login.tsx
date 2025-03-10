@@ -10,7 +10,7 @@ import { useState, useEffect } from "react";
 import { auth } from "@/lib/firebase";
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -72,17 +72,36 @@ const Login = () => {
   const handleGoogleLogin = async () => {
     try {
       const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
-      navigate("/");
-      toast({
-        title: "Success",
-        description: "Successfully logged in with Google!",
+      // Add scopes to request email
+      provider.addScope('email');
+      // Set custom parameters for the Google provider
+      provider.setCustomParameters({
+        prompt: 'select_account'
       });
-    } catch (error) {
+      
+      const result = await signInWithPopup(auth, provider);
+      
+      if (result.user) {
+        navigate("/");
+        toast({
+          title: "Success",
+          description: "Successfully logged in with Google!",
+        });
+      }
+    } catch (error: any) {
+      console.error("Google login error:", error);
+      let errorMessage = "Failed to login with Google.";
+      
+      if (error.code === 'auth/popup-closed-by-user') {
+        errorMessage = "Login popup was closed. Please try again.";
+      } else if (error.code === 'auth/popup-blocked') {
+        errorMessage = "Login popup was blocked. Please allow popups for this site.";
+      }
+      
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to login with Google.",
+        description: errorMessage,
       });
     }
   };
@@ -164,6 +183,7 @@ const Login = () => {
             variant="outline"
             className="w-full flex items-center justify-center gap-2"
             onClick={handleGoogleLogin}
+            type="button"
           >
             <FcGoogle className="w-5 h-5" />
             Continue with Google
