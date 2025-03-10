@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -17,23 +18,25 @@ import { onAuthStateChanged } from "firebase/auth";
 const queryClient = new QueryClient();
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setIsAuthenticated(!!user);
-      setLoading(false);
     });
 
     return () => unsubscribe();
   }, []);
 
-  if (loading) {
-    return <div>Loading...</div>;
+  if (isAuthenticated === null) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-pulse text-primary">Loading...</div>
+      </div>
+    );
   }
 
-  if (!isAuthenticated) {
+  if (isAuthenticated === false) {
     return <Navigate to="/login" replace />;
   }
 
@@ -61,6 +64,8 @@ const App = () => (
             <Route path="/item-logs" element={<ItemLogs />} />
             <Route path="/invoices" element={<Invoices />} />
           </Route>
+          {/* Catch-all route to redirect to dashboard */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
